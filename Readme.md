@@ -1,7 +1,7 @@
 # Личный проект «TaskForce»
 
 * Студент: [Дмитрий Панов](https://up.htmlacademy.ru/yii/1/user/1487447).
-* Наставник: `Неизвестно`.
+* Наставник: [Илья Кондрашов](https://htmlacademy.ru/profile/id644427)
 
 ---
 
