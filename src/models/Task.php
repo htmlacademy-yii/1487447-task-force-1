@@ -31,6 +31,17 @@ class Task {
     public $customer_id;
 
     /**
+     * Task constructor.
+     *
+     * @param int $executorId
+     * @param int $customerId
+     */
+    public function __construct($executorId, $customerId) {
+        $this->executor_id = $executorId;
+        $this->customer_id = $customerId;
+    }
+
+    /**
      * @return array
      */
     public static function getMapStatus() {
