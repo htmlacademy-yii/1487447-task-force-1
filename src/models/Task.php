@@ -83,7 +83,7 @@ class Task {
             case $status === self::STATUS_NEW :
                 return [self::ACTION_CANCELED, self::ACTION_IN_WORK];
             case $status === self::STATUS_IN_WORK :
-                return [self::ACTION_FAILED, self::ACTION_FAILED];
+                return [self::ACTION_FINISH, self::ACTION_FAILED];
             default :
                 new \Exception("undefined status : $status");
         }
