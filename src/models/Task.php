@@ -99,6 +99,8 @@ class Task {
                 return [self::ACTION_REJECT_TASK, self::ACTION_TAKE_TO_WORK];
             case $status === self::STATUS_IN_WORK :
                 return [self::ACTION_COMPLETED, self::ACTION_REFUSE];
+            default :
+                return [];
         }
 
     }
