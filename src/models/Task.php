@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace TaskForce\models;
 
 /**
@@ -16,10 +17,10 @@ class Task {
     const STATUS_DONE       = 'done';
     const STATUS_FAILED     = 'failed';
 
-    const ACTION_CANCELED = 'action_canceled';
-    const ACTION_IN_WORK  = 'action_in_work';
-    const ACTION_FINISH   = 'action_finish';
-    const ACTION_FAILED   = 'action_failed';
+    const ACTION_REJECT_TASK    = 'action_reject_task';
+    const ACTION_TAKE_TO_WORK   = 'action_take_to_work';
+    const ACTION_COMPLETED      = 'action_completed';
+    const ACTION_REFUSE         = 'action_refuse';
 
     /** @var string */
     public $status;
@@ -32,19 +33,19 @@ class Task {
 
     /**
      * Task constructor.
-     *
-     * @param int $executorId
-     * @param int $customerId
+     * @param int $customer_id
      */
-    public function __construct($executorId, $customerId) {
-        $this->executor_id = $executorId;
-        $this->customer_id = $customerId;
+    public function __construct(int $customer_id)
+    {
+        $this->customer_id  = $customer_id;
+        $this->status       = self::STATUS_NEW;
     }
 
     /**
      * @return array
      */
-    public static function getMapStatus() {
+    public static function getMapStatus(): array
+    {
         return [
             self::STATUS_NEW        => 'Новое',
             self::STATUS_CANCELED   => 'Отменено',
@@ -57,12 +58,13 @@ class Task {
     /**
      * @return array
      */
-    public static function getMapActions() {
+    public static function getMapActions(): array
+    {
         return[
-            self::ACTION_FINISH     => 'Выполнено',
-            self::ACTION_CANCELED   => 'Отменить',
-            self::ACTION_IN_WORK    => 'Откликнуться',
-            self::ACTION_FAILED     => 'Отказаться'
+            self::ACTION_COMPLETED      => 'Выполнено',
+            self::ACTION_REJECT_TASK    => 'Отменить',
+            self::ACTION_TAKE_TO_WORK   => 'Откликнуться',
+            self::ACTION_REFUSE         => 'Отказаться'
         ];
     }
 
@@ -70,15 +72,16 @@ class Task {
      * @param string $action
      * @return string
      */
-    public static function getStatusAfterAction($action) {
+    public static function getStatusAfterAction(string $action): string
+    {
         switch ($action) {
-            case $action === self::ACTION_IN_WORK :
+            case $action === self::ACTION_TAKE_TO_WORK :
                 return self::STATUS_IN_WORK;
-            case $action === self::ACTION_CANCELED :
+            case $action === self::ACTION_REJECT_TASK :
                 return self::STATUS_CANCELED;
-            case $action === self::ACTION_FAILED :
+            case $action === self::ACTION_REFUSE :
                 return self::STATUS_FAILED;
-            case $action === self::ACTION_FINISH :
+            case $action === self::ACTION_COMPLETED :
                 return self::STATUS_DONE;
             default :
                 new \Exception("undefined action : $action");
@@ -89,14 +92,13 @@ class Task {
      * @param string $status
      * @return array
      */
-    public static function getActionsForStatus($status) {
+    public static function getActionsForStatus($status): array
+    {
         switch ($status) {
             case $status === self::STATUS_NEW :
-                return [self::ACTION_CANCELED, self::ACTION_IN_WORK];
+                return [self::ACTION_REJECT_TASK, self::ACTION_TAKE_TO_WORK];
             case $status === self::STATUS_IN_WORK :
-                return [self::ACTION_FINISH, self::ACTION_FAILED];
-            default :
-                new \Exception("undefined status : $status");
+                return [self::ACTION_COMPLETED, self::ACTION_REFUSE];
         }
 
     }
