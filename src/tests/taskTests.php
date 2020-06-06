@@ -1,7 +1,7 @@
 <?php
 use TaskForce\models\Task;
 
-require_once '../models/Task.php';
+require_once '../../vendor/autoload.php';
 
 assert(Task::getMapActions() === [
         Task::ACTION_COMPLETED      => 'Выполнено',
